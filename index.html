@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Bilangan Bulat - Pilih Konsep</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        background: url("bg.gif") center/cover no-repeat fixed;
+        color: #fff;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+      }
+
+      h1 {
+        font-size: 2.5rem;
+        text-shadow: 2px 2px 4px #000;
+      }
+
+      .card-choice {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        border-radius: 20px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+        padding: 30px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        width: 320px;
+      }
+
+      .card-choice:hover {
+        transform: scale(1.05);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.7);
+      }
+
+      .btn-custom {
+        width: 100%;
+        font-size: 1.2rem;
+        margin-top: 15px;
+        border-radius: 12px;
+      }
+
+      .btn-konsep {
+        background: linear-gradient(to right, #4facfe, #00f2fe);
+        border: none;
+      }
+
+      .btn-kedalaman {
+        background: linear-gradient(to right, #43e97b, #38f9d7);
+        border: none;
+      }
+
+      .btn-custom:hover {
+        opacity: 0.9;
+      }
+
+      .audio-control {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 9999;
+        background-color: rgba(0, 0, 0, 0.6);
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
+      .audio-control:hover {
+        background-color: rgba(0, 0, 0, 0.8);
+      }
+      .audio-control i {
+        color: white;
+        font-size: 20px;
+      }
+
+      @media (max-width: 600px) {
+        .card-choice {
+          width: 90%;
+        }
+
+        h1 {
+          font-size: 1.8rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Tombol Mute/Unmute Musik -->
+    <div class="audio-control" onclick="toggleMute()">
+      <i id="audio-icon" class="bi bi-volume-up-fill"></i>
+    </div>
+
+    <!-- Musik Latar -->
+    <audio id="background-music" autoplay loop muted>
+      <source src="musik.mp3" type="audio/mpeg" />
+      Browser Anda tidak mendukung audio.
+    </audio>
+
+    <h1 class="mb-4">Mengenal dan Memahami Konsep Bilangan Bulat</h1>
+    <div
+      class="card-choice d-flex justify-content-center gap-5 text-center"
+      style="min-width: 40%; height: 300px; align-items: center"
+    >
+      <!-- Tombol Konsep Dasar -->
+      <a
+        href="konsep.html"
+        class="btn btn-custom btn-konsep d-flex flex-column align-items-center p-4"
+      >
+        <i
+          class="bi bi-lightbulb-fill"
+          style="font-size: 4rem; color: #ffc107"
+        ></i>
+        <span class="mt-2 fs-5">🎯 Konsep Dasar</span>
+      </a>
+
+      <!-- Tombol Kedalaman -->
+      <a
+        href="kedalaman.html"
+        class="btn btn-custom btn-kedalaman d-flex flex-column align-items-center p-4"
+      >
+        <i
+          class="bi bi-graph-up-arrow"
+          style="font-size: 4rem; color: #0d6efd"
+        ></i>
+        <span class="mt-2 fs-5">🧠 Kedalaman</span>
+      </a>
+    </div>
+
+    <!-- Script -->
+    <script>
+      const audio = document.getElementById("background-music");
+      const icon = document.getElementById("audio-icon");
+
+      // Fungsi untuk mute/unmute manual lewat tombol
+      function toggleMute() {
+        audio.muted = !audio.muted;
+        icon.className = audio.muted
+          ? "bi bi-volume-mute-fill"
+          : "bi bi-volume-up-fill";
+      }
+
+      // Coba unmute otomatis setelah halaman dimuat
+      window.addEventListener("DOMContentLoaded", () => {
+        setTimeout(() => {
+          try {
+            audio.muted = false;
+            audio.volume = 1.0; // volume tidak terlalu keras
+            audio.play();
+            icon.className = "bi bi-volume-up-fill";
+          } catch (e) {
+            console.log("Autoplay dengan suara ditolak oleh browser:", e);
+          }
+        }, 1000);
+      });
+    </script>
+  </body>
+</html>

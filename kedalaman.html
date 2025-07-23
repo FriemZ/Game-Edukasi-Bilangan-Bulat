@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Kedalaman Bilangan Bulat</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        background: #f0f2f5;
+        padding: 30px;
+      }
+      .line-container {
+        position: relative;
+        height: 700px;
+        width: 120px;
+        margin: auto;
+      }
+      .line {
+        position: absolute;
+        width: 4px;
+        background-color: black;
+        top: 0;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      .number {
+        position: absolute;
+        left: 70px;
+        transform: translateY(-50%);
+        font-size: 16px;
+        font-weight: bold;
+      }
+      .tick {
+        position: absolute;
+        left: 45px;
+        width: 20px;
+        height: 2px;
+        background-color: black;
+        transform: translateY(-50%);
+      }
+      #orang {
+        position: absolute;
+        width: 70px;
+        transition: top 1s ease;
+        left: 10px;
+        z-index: 2;
+      }
+      #bubble {
+        position: absolute;
+        background: white;
+        border: 2px solid #444;
+        padding: 10px 16px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        font-size: 16px;
+        left: -180px;
+        top: 0;
+        white-space: nowrap;
+        display: none;
+        max-width: 220px;
+        z-index: 3;
+      }
+      #bubble::after {
+        content: "";
+        position: absolute;
+        right: -10px;
+        top: 20px;
+        border-width: 10px 0 10px 10px;
+        border-style: solid;
+        border-color: transparent transparent transparent white;
+      }
+      #marker {
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        border: 3px solid red;
+        background-color: transparent;
+        left: 36px;
+        display: none;
+        z-index: 1;
+        transform: translateY(-50%);
+        pointer-events: none;
+      }
+      .offcanvas-backdrop {
+        display: none !important;
+      }
+      .input-kanan {
+        position: absolute;
+        right: 100px;
+        top: 120px;
+      }
+      #gambarku {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        object-fit: cover; /* biar menyesuaikan penuh tapi tidak melar aneh */
+        z-index: -1; /* di belakang elemen lain */
+      }
+
+
+      
+      .audio-control {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 9999;
+        background-color: rgba(0, 0, 0, 0.6);
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
+      .audio-control:hover {
+        background-color: rgba(0, 0, 0, 0.8);
+      }
+      .audio-control i {
+        color: white;
+        font-size: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Tombol Mute/Unmute Musik -->
+    <div class="audio-control" onclick="toggleMute()">
+      <i id="audio-icon" class="bi bi-volume-up-fill"></i>
+    </div>
+
+    <!-- Musik Latar -->
+    <audio id="background-music" autoplay loop muted>
+      <source src="musik.mp3" type="audio/mpeg" />
+      Browser Anda tidak mendukung audio.
+    </audio>
+    <div class="container text-center">
+      <h2></h2>
+      <div
+        class="input-kanan d-flex flex-column gap-3 justify-content-center align-content-center"
+        style="
+          width: 550px;
+          height: 500px;
+          background: rgba(255, 255, 255, 0.248);
+          backdrop-filter: blur(10px);
+          -webkit-backdrop-filter: blur(10px);
+          border-radius: 20px;
+          padding: 30px;
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+          border: 1px solid rgba(255, 255, 255, 0.3);
+        "
+      >
+        <h5 class="text-center fw-bold text-white">
+          Mengenal dan Memahami Konsep Bilangan Bulat Dalam Kehidupan
+        </h5>
+
+        <div class="form-group">
+          <label for="langkah1" class="form-label text-white">Langkah 1</label>
+          <input
+            type="number"
+            class="form-control"
+            id="langkah1"
+            placeholder="Contoh: -5"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="langkah2" class="form-label text-white">Langkah 2</label>
+          <input
+            type="number"
+            class="form-control"
+            id="langkah2"
+            placeholder="Contoh: 3"
+          />
+        </div>
+
+        <button class="btn btn-success mt-2" onclick="jalankan()">
+          Jalankan Animasi
+        </button>
+        <a href="index.html" class="btn btn-info text-white mt-2">back</a>
+      </div>
+
+      <div class="line-container mt-0">
+        <div class="line"></div>
+        <img
+          src="iron.gif"
+          id="orang"
+          style="margin-left: -50px; margin-top: -42px; width: 78px"
+        />
+        <div id="bubble"></div>
+        <div id="marker"></div>
+        <img src="laut.jpg" id="gambarku" />
+      </div>
+    </div>
+
+    <!-- OFFCANVAS -->
+    <div
+      class="offcanvas offcanvas-start show"
+      tabindex="-1"
+      id="canvasKeterangan"
+      style="visibility: hidden"
+    >
+      <div class="offcanvas-header">
+        <h4 class="offcanvas-title">Penjelasan Matematika</h4>
+        <button
+          type="button"
+          class="btn-close"
+          onclick="tutupCanvas()"
+        ></button>
+      </div>
+      <div class="offcanvas-body" id="isiCanvas">
+        <!-- Akan diisi dinamis -->
+      </div>
+    </div>
+    <!-- Script -->
+    <script>
+      const audio = document.getElementById("background-music");
+      const icon = document.getElementById("audio-icon");
+
+      // Fungsi untuk mute/unmute manual lewat tombol
+      function toggleMute() {
+        audio.muted = !audio.muted;
+        icon.className = audio.muted
+          ? "bi bi-volume-mute-fill"
+          : "bi bi-volume-up-fill";
+      }
+
+      // Coba unmute otomatis setelah halaman dimuat
+      window.addEventListener("DOMContentLoaded", () => {
+        setTimeout(() => {
+          try {
+            audio.muted = false;
+            audio.volume = 1.0; // volume tidak terlalu keras
+            audio.play();
+            icon.className = "bi bi-volume-up-fill";
+          } catch (e) {
+            console.log("Autoplay dengan suara ditolak oleh browser:", e);
+          }
+        }, 1000);
+      });
+    </script>
+    <script>
+      const container = document.querySelector(".line-container");
+      const marker = document.getElementById("marker");
+
+      for (let i = -15; i <= 15; i++) {
+        const percent = 50 - i * (100 / 30);
+        const tick = document.createElement("div");
+        tick.className = "tick";
+        tick.style.top = `${percent}%`;
+
+        const label = document.createElement("div");
+        label.className = "number";
+        label.style.top = `${percent}%`;
+        label.innerText = i;
+
+        container.appendChild(tick);
+        container.appendChild(label);
+      }
+
+      const orang = document.getElementById("orang");
+      const bubble = document.getElementById("bubble");
+
+      function posisiKePersen(nilai) {
+        return 50 - nilai * (100 / 30);
+      }
+
+      function gerakKe(persen) {
+        orang.style.top = `${persen}%`;
+        bubble.style.top = `${persen}%`;
+        marker.style.top = `${persen}%`;
+        marker.style.display = "block";
+      }
+
+      function delay(ms) {
+        return new Promise((resolve) => setTimeout(resolve, ms));
+      }
+
+      async function jalankan() {
+        const l1 = parseInt(document.getElementById("langkah1").value || 0);
+        const l2 = parseInt(document.getElementById("langkah2").value || 0);
+
+        let posisi = 0;
+        gerakKe(posisiKePersen(posisi));
+        tampilkanBubble(`Saya mulai dari ${posisi}`);
+        await delay(3000);
+
+        posisi += l1;
+        gerakKe(posisiKePersen(posisi));
+        tampilkanBubble(`Langkah 1: ${l1}, sekarang ${posisi}`);
+        await delay(3000);
+
+        if (!isNaN(l2) && l2 !== 0) {
+          posisi += l2;
+          gerakKe(posisiKePersen(posisi));
+          tampilkanBubble(`Langkah 2: ${l2}, sekarang ${posisi}`);
+          await delay(3000);
+        }
+
+        gerakKe(posisiKePersen(posisi));
+        tampilkanBubble(`Saya berhenti di ${posisi}`, true);
+
+        // Tampilkan canvas penjelasan
+        tampilkanCanvasPenjelasan(l1, l2, posisi);
+      }
+
+      function tampilkanBubble(teks, tahan = false) {
+        bubble.innerText = teks;
+        bubble.style.display = "block";
+        if (!tahan) {
+          setTimeout(() => {
+            bubble.style.display = "none";
+          }, 3000);
+        }
+      }
+
+      function tampilkanCanvasPenjelasan(l1, l2, akhir) {
+        const isi = document.getElementById("isiCanvas");
+        let kalimat = `Misalnya kita mulai dari 0.<br>`;
+        kalimat += `Kemudian bergerak sebanyak ${l1} langkah, maka kita sampai di ${l1}.<br>`;
+        if (!isNaN(l2) && l2 !== 0) {
+          const titik2 = l1 + l2;
+          kalimat += `Lalu bergerak lagi ${l2} langkah, maka kita sampai di ${titik2}.<br>`;
+          kalimat += `<strong>Jadi, 0 + ${l1} + ${l2} = ${akhir}</strong>`;
+        } else {
+          kalimat += `<strong>Jadi, 0 + ${l1} = ${akhir}</strong>`;
+        }
+
+        isi.innerHTML = kalimat;
+        document.getElementById("canvasKeterangan").style.visibility =
+          "visible";
+      }
+
+      function tutupCanvas() {
+        document.getElementById("canvasKeterangan").style.visibility = "hidden";
+      }
+
+      // Inisialisasi posisi awal
+      window.onload = () => {
+        gerakKe(posisiKePersen(0));
+        tampilkanBubble(`Saya mulai dari 0`);
+      };
+    </script>
+  </body>
+</html>
