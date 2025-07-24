@@ -108,8 +108,16 @@
         z-index: -1; /* di belakang elemen lain */
       }
 
+      .copyright {
+        position: fixed;
+        bottom: 10px;
+        right: 10px;
+        font-size: 26px;
+        color: #ffffff;
+        font-family: Arial, sans-serif;
+        z-index: 9999;
+      }
 
-      
       .audio-control {
         position: fixed;
         top: 20px;
@@ -134,6 +142,12 @@
     </style>
   </head>
   <body>
+    <div class="copyright">
+      &copy; 2025
+      <a class="text-white" href="https://mywebsite-friemz.turbo-main.com/"
+        >FriemZ</a
+      >. All rights reserved.
+    </div>
     <!-- Tombol Mute/Unmute Musik -->
     <div class="audio-control" onclick="toggleMute()">
       <i id="audio-icon" class="bi bi-volume-up-fill"></i>

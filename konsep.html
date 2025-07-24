@@ -166,9 +166,25 @@
         color: white;
         font-size: 20px;
       }
+
+      .copyright {
+        position: fixed;
+        bottom: 10px;
+        left: 10px;
+        font-size: 26px;
+        color: #ffffff;
+        font-family: Arial, sans-serif;
+        z-index: 9999;
+      }
     </style>
   </head>
   <body>
+    <div class="copyright">
+      &copy; 2025
+      <a class="text-white" href="https://mywebsite-friemz.turbo-main.com/"
+        >FriemZ</a
+      >. All rights reserved.
+    </div>
     <!-- Tombol Mute/Unmute Musik -->
     <div class="audio-control" onclick="toggleMute()">
       <i id="audio-icon" class="bi bi-volume-up-fill"></i>
