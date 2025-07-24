@@ -139,9 +139,38 @@
         color: white;
         font-size: 20px;
       }
+
+      .fullscreen-control {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        z-index: 9999;
+        background-color: rgba(0, 0, 0, 0.6);
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
+      .fullscreen-control:hover {
+        background-color: rgba(0, 0, 0, 0.8);
+      }
+      .fullscreen-control i {
+        color: white;
+        font-size: 20px;
+      }
+      
     </style>
   </head>
   <body>
+    <!-- FULLSCREEN START -->
+    <div class="fullscreen-control" onclick="toggleFullScreen()">
+      <i id="fullscreen-icon" class="bi bi-arrows-fullscreen"></i>
+    </div>
+    <!-- FULLSCREEN END -->
+
     <div class="copyright">
       &copy; 2025
       <a class="text-white" href="https://mywebsite-friemz.turbo-main.com/"
@@ -357,6 +386,26 @@
 
       function tutupCanvas() {
         document.getElementById("canvasKeterangan").style.visibility = "hidden";
+      }
+
+      function toggleFullScreen() {
+        const icon = document.getElementById("fullscreen-icon");
+        if (!document.fullscreenElement) {
+          document.documentElement
+            .requestFullscreen()
+            .then(() => {
+              icon.className = "bi bi-fullscreen-exit";
+            })
+            .catch((err) => {
+              console.warn(
+                `Error attempting to enable full-screen mode: ${err.message}`
+              );
+            });
+        } else {
+          document.exitFullscreen().then(() => {
+            icon.className = "bi bi-arrows-fullscreen";
+          });
+        }
       }
 
       // Inisialisasi posisi awal

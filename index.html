@@ -101,9 +101,38 @@
           font-size: 1.8rem;
         }
       }
+
+      .fullscreen-control {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        z-index: 9999;
+        background-color: rgba(0, 0, 0, 0.6);
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
+      .fullscreen-control:hover {
+        background-color: rgba(0, 0, 0, 0.8);
+      }
+      .fullscreen-control i {
+        color: white;
+        font-size: 20px;
+      }
     </style>
   </head>
   <body>
+    <!-- Tambahkan di dalam <body> sebelum <h1> -->
+    <!-- FULLSCREEN START -->
+    <div class="fullscreen-control" onclick="toggleFullScreen()">
+      <i id="fullscreen-icon" class="bi bi-arrows-fullscreen"></i>
+    </div>
+    <!-- FULLSCREEN END -->
+
     <!-- Tombol Mute/Unmute Musik -->
     <div class="audio-control" onclick="toggleMute()">
       <i id="audio-icon" class="bi bi-volume-up-fill"></i>
@@ -145,7 +174,10 @@
       </a>
     </div>
     <h5 class="mb-4 mt-3">
-      &copy; Created by <a class="text-white" href="https://mywebsite-friemz.turbo-main.com/">FriemZ</a>
+      &copy; Created by
+      <a class="text-white" href="https://mywebsite-friemz.turbo-main.com/"
+        >FriemZ</a
+      >
     </h5>
 
     <!-- Script -->
@@ -159,6 +191,26 @@
         icon.className = audio.muted
           ? "bi bi-volume-mute-fill"
           : "bi bi-volume-up-fill";
+      }
+
+      function toggleFullScreen() {
+        const icon = document.getElementById("fullscreen-icon");
+        if (!document.fullscreenElement) {
+          document.documentElement
+            .requestFullscreen()
+            .then(() => {
+              icon.className = "bi bi-fullscreen-exit";
+            })
+            .catch((err) => {
+              console.warn(
+                `Error attempting to enable full-screen mode: ${err.message}`
+              );
+            });
+        } else {
+          document.exitFullscreen().then(() => {
+            icon.className = "bi bi-arrows-fullscreen";
+          });
+        }
       }
 
       // Coba unmute otomatis setelah halaman dimuat
